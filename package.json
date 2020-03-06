@@ -1,0 +1,39 @@
+{
+  "name": "chaffinch",
+  "devDependencies": {
+    "@11ty/eleventy": "^0.10.0",
+    "@fullhuman/postcss-purgecss": "^2.0.6",
+    "@rollup/plugin-commonjs": "^11.0.1",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "autoprefixer": "^9.7.4",
+    "cssnano": "^4.1.10",
+    "del-cli": "^3.0.0",
+    "escape-string-regexp": "^2.0.0",
+    "glob": "^7.1.6",
+    "html-minifier": "^4.0.0",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^7.0.27",
+    "postcss-cli": "^7.1.0",
+    "postcss-import": "^12.0.1",
+    "require-from-string": "^2.0.2",
+    "rollup": "^1.16.2",
+    "rollup-plugin-delete": "^1.2.0",
+    "rollup-plugin-livereload": "^1.0.4",
+    "rollup-plugin-terser": "^5.0.0",
+    "serve": "^11.0.2",
+    "tailwindcss": "^1.2.0"
+  },
+  "dependencies": {
+    "date-fns": "^1.30.1",
+    "htm": "^3.0.3",
+    "preact": "^10.3.3",
+    "sharp": "^0.24.1"
+  },
+  "scripts": {
+    "clean": "del build .build-tmp",
+    "build": "npm run clean && rollup -c && del .build-tmp",
+    "watch": "npm run clean && rollup -c --watch",
+    "dev": "npm-run-all --parallel start watch",
+    "start": "serve dist"
+  }
+}

@@ -1,0 +1,10 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+.fader {
+  animation-name: fadeIn;
+  animation-duration: 1s;
+}

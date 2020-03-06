@@ -1,0 +1,47 @@
+---
+title: "Hello world"
+images:
+  - DSC00318.jpg
+  - DSC00364.jpg
+  - DSC00760.jpg
+---
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="chaffinchAsset(./tailwind.css)"/>
+    <link rel="stylesheet" type="text/css" href="chaffinchAsset(./main.css)"/>
+  </head>
+  <body>
+    <main class="w-full">
+      {% for filename in images %}
+        {% set path %}./img/{{filename}}{% endset %}
+        {% set abspath %}./src/img/{{filename}}{% endset %}
+
+        <article class="p-2 md:flex items-end justify-center border-b-2 border-black" >
+          <div
+          data-src="img-1200({{ path }})" 
+          data-sm="img-600({{ path }})"
+          data-md="img-800({{ path }})"
+          data-lg="img-1200({{ path }})"
+          data-alt="{{filename}}" 
+          data-aspect={{ abspath | aspect }} 
+          data-bg="{{abspath | blurPreview }}"
+          class="lazy w-full md:max-w-xl"
+        >
+            <noscript>
+              <img src="chaffinchAsset(./img/{{ filename }})" alt="{{filename}}"></img>
+            </noscript>
+          </div>
+          <div class="md:pl-4">
+            <h2 class="">Image caption</h2>
+            <p class="italic text-gray-700 text-sm">12 days ago</p>
+          </div>
+        </article>
+      {% endfor %}
+
+    </main>
+    <script defer src="chaffinchAsset(./index.js)"></script>
+  </body>
+</html>
