@@ -1,0 +1,17 @@
+{
+  "routes": [
+    {
+      "src": "/images/(.*)",
+      "headers": { "Cache-Control": "s-maxage=604800" },
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/*.js",
+      "headers": { "Cache-Control": "s-maxage=604800" }
+    },
+    {
+      "src": "/*.css",
+      "headers": { "Cache-Control": "s-maxage=604800" }
+    }
+  ]
+}
