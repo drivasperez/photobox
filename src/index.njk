@@ -9,13 +9,13 @@ title: "Photo Box"
     <link rel="stylesheet" type="text/css" href="chaffinchAsset(/main.css)"/>
   </head>
   <body>
-    <main class="w-full">
-      <h1 class="w-full lg:w-4/5 mx-auto p-4 text-3xl font-thin font-sans">{{ title }}</h1>
+    <main class="w-full p-8">
+      <h1 class="w-full mx-auto p-4 text-4xl lg:text-3xl font-thin font-sans">{{ title }}</h1>
       {% for image in images %}
         {% set path %}./img/{{image.file}}{% endset %}
         {% set abspath %}./src/img/{{image.file}}{% endset %}
-        <figure class="w-full lg:w-4/5 mx-auto p-2 block md:flex items-end justify-center" >
-          <div class="flex-1 pb-4 border-b border-black">
+        <figure class="mx-auto p-2 block lg:flex items-end justify-center" >
+          <div class="flex-1 pb-4 lg:border-b border-black">
             <div
           data-src="img-1200({{ path }})" 
           data-sm="img-700({{ path }})"
@@ -32,19 +32,23 @@ title: "Photo Box"
             </div>
 
           </div>
-          <figcaption class="md:pl-4 w-40 ">
-            <p class="uppercase tracking-wide text-gray-900 text-xs">{{ abspath | exif(["image.Make", "image.Model"]) }}</p>
-            <p class="text-gray-800 text-xs whitespace-no-wrap">
-              <span class="text-gray-700 tracking-wide">FL </span>
-              {{ abspath | exif("exif.FocalLength") }}
+          <figcaption class="lg:pl-4 w-full lg:w-40 text-3xl lg:text-sm align-baseline flex flex-0 lg:block items-start justify-between w-40 ">
+            <div class="order-2 text-right lg:text-left">
+              <p class="uppercase hidden lg:block tracking-wide text-gray-900 lg:text-xs">{{ abspath | exif(["image.Make", "image.Model"]) }}</p>
+              <p class="text-gray-800 lg:text-xs whitespace-no-wrap">
+                <span class="text-gray-700 tracking-wide">FL </span>
+                {{ abspath | exif("exif.FocalLength") }}
               &bull;
               <span class="text-gray-700 tracking-wide ">A </span>
-              {{ abspath | exif("exif.FNumber") }}
+                {{ abspath | exif("exif.FNumber") }}
               &bull;
               <span class="text-gray-700 tracking-wide ">Sh. </span>
-              {{ abspath | exif("exif.ShutterSpeedValue") }}</p>
-            <h2 class="">{{image.description}}</h2>
-            <p class="italic text-gray-800 text-sm">{{ abspath | exif("exif.DateTimeOriginal") | date("",":") }}</p>
+                {{ abspath | exif("exif.ShutterSpeedValue") }}</p>
+            </div>
+            <div class="order-1">
+              <h2 class="max-w-sm">{{image.description}}</h2>
+              <p class="italic text-gray-800 lg:text-sm">{{ abspath | exif("exif.DateTimeOriginal") | date("",":") }}</p>
+            </div>
           </figcaption>
         </figure>
       {% endfor %}

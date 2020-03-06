@@ -44,7 +44,7 @@ function Img({ src, sm, md, lg, alt, aspectRatio, bg }) {
   return html`
     <div
       ref=${ref}
-      class="relative bg-orange-400"
+      class="relative"
       style="padding-top: ${aspectRatio}%; background: url(data:image/gif;base64,${bg}); background-size: 100% 100%; background-repeat: no-repeat;"
     >
       ${wasVisible &&
@@ -54,8 +54,13 @@ function Img({ src, sm, md, lg, alt, aspectRatio, bg }) {
             <source srcset=${md} media="(min-width: 800px)" />
             <source srcset=${sm} />
             <img
-              onload=${() => setHasLoaded(true)}
-              class="absolute w-full h-full left-0 top-0 fader"
+              onload=${() => {
+                console.log("Loaded!");
+                setHasLoaded(true);
+              }}
+              class="absolute w-full h-full left-0 top-0 ${hasLoaded
+                ? "fader"
+                : ""}"
               style="width: 100%; height: 100% opacity: ${hasLoaded ? 1 : 0}"
               alt=${alt}
               src=${src}
