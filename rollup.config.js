@@ -28,6 +28,7 @@ const usePostCSS = fs.existsSync(chaffinchConfig.postCSSconfig);
 
 export default async function({ watch }) {
   if (usePostCSS) {
+    console.log("Using postcss");
     await buildPostCSS("src/**/*.css", ".build-tmp", { watch });
   } else {
     let files = await glob("src/**/*.css");
@@ -70,7 +71,7 @@ export default async function({ watch }) {
       htmlCSSPlugin(),
       assetPlugin(),
       classnamePlugin(".build-tmp"),
-      del({ targets: chaffinchConfig.outputDir + "/*" }),
+      production && del({ targets: chaffinchConfig.outputDir + "/*" }),
       !production && liveReload(chaffinchConfig.outputDir),
       production && terser({ ecma: 8, module: true }), // minify, but only in production
     ],

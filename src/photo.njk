@@ -1,0 +1,39 @@
+---
+pagination: 
+  data: images
+  size: 1
+  alias: image
+permalink: "images/{{ image.description | slug }}.html"
+---
+{% set path %}/img/{{image.file}}{% endset %}
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="chaffinchAsset(/tailwind.css)"/>
+    <link rel="stylesheet" type="text/css" href="chaffinchAsset(/main.css)"/>
+    <script async src="chaffinchAsset(/index.js)"></script>
+  </head>
+  <body >
+    <main >
+      <div class="">
+        <div
+          data-src="chaffinchAsset({{ path }})" 
+          data-sm="img-600({{ path }})"
+          data-md="img-800({{ path }})"
+          data-lg="img-1200({{ path }})"
+          data-alt="{{ file.description }}" 
+          data-aspect={{ path | aspect }} 
+          data-bg="{{ path | blurPreview }}"
+          class="lazy"
+        >
+          <noscript>
+            <img src="chaffinchAsset({{ path }})" alt="{{ file.description }}"></img>
+          </noscript>
+        </div>
+      </div>
+      <div class="md:pl-4">
+        <h2 class="">{{ image.description }}</h2>
+        <p class="italic text-gray-700 text-sm">12 days ago</p>
+      </div>
+    </main>
+  </body>

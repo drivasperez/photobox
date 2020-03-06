@@ -34,6 +34,7 @@ function useIntersectionObs({ root = null, rootMargin, threshold = 0 }) {
 
 function Img({ src, sm, md, lg, alt, aspectRatio, bg }) {
   const [wasVisible, setWasVisible] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const [{ ref }, { isIntersecting }] = useIntersectionObs({});
 
   useEffect(() => {
@@ -53,8 +54,9 @@ function Img({ src, sm, md, lg, alt, aspectRatio, bg }) {
             <source srcset=${md} media="(min-width: 800px)" />
             <source srcset=${sm} />
             <img
-              class="absolute left-0 top-0 fader"
-              style="width: 100%; height: 100%"
+              onload=${() => setHasLoaded(true)}
+              class="absolute w-full h-full left-0 top-0 fader"
+              style="width: 100%; height: 100% opacity: ${hasLoaded ? 1 : 0}"
               alt=${alt}
               src=${src}
             />
