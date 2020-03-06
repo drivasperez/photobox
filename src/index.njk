@@ -17,15 +17,16 @@ title: "Photo Box"
         <figure class="mx-auto p-2 block lg:flex items-end justify-center" >
           <div class="flex-1 pb-4 lg:border-b border-black">
             <div
-          data-src="img-1200({{ path }})" 
-          data-sm="img-700({{ path }})"
-          data-md="img-800({{ path }})"
-          data-lg="img-1200({{ path }})"
-          data-alt="{{image.description}}" 
-          data-aspect={{ abspath | aspect }} 
-          data-bg="{{abspath | blurPreview }}"
-          class="lazy w-full h-full"
-        >
+              data-src="img-1200({{ path }})" 
+              data-xs="img-400({{ path }})"
+              data-sm="img-600({{ path }})"
+              data-md="img-800({{ path }})"
+              data-lg="img-1200({{ path }})"
+              data-alt="{{image.description}}" 
+              data-aspect={{ abspath | aspect }} 
+              data-bg="{{abspath | blurPreview }}"
+              class="lazy w-full h-full"
+            >
               <noscript>
                 <img src="chaffinchAsset({{ path }})" alt="{{image.description}}"></img>
               </noscript>
