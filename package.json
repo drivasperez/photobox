@@ -34,7 +34,6 @@
     "clean": "del build .build-tmp",
     "build": "npm run clean && rollup -c && del .build-tmp",
     "watch": "npm run clean && rollup -c --watch",
-    "dev": "npm-run-all --parallel start watch",
     "start": "serve dist"
   }
 }

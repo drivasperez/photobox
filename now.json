@@ -1,9 +1,4 @@
 {
-  "env": {
-    "ADOBE_API_KEY": "@adobe-api-key",
-    "ADOBE_CLIENT_SECRET": "@adobe-client-secret",
-    "NOW_API_TOKEN": "@now-api-token"
-  },
   "routes": [
     {
       "src": "/img/(.*)",
