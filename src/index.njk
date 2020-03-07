@@ -7,6 +7,7 @@ title: "Photo Box"
     <title>{{ title }}</title>
     <link rel="stylesheet" type="text/css" href="chaffinchAsset(/tailwind.css)"/>
     <link rel="stylesheet" type="text/css" href="chaffinchAsset(/main.css)"/>
+    <script defer src="chaffinchAsset(/index.js)"></script>
   </head>
   <body>
     <main class="w-full p-8">
@@ -17,11 +18,11 @@ title: "Photo Box"
         <figure class="mx-auto p-2 block lg:flex items-end justify-center" >
           <div class="flex-1 pb-4 lg:border-b border-black">
             <div
-              data-src="img-1200({{ path }})" 
-              data-xs="img-400({{ path }})"
-              data-sm="img-600({{ path }})"
-              data-md="img-800({{ path }})"
-              data-lg="img-1200({{ path }})"
+              data-src="img-2400({{ path }})" 
+              data-xs="img-800({{ path }})"
+              data-sm="img-1200({{ path }})"
+              data-md="img-1600({{ path }})"
+              data-lg="img-2400({{ path }})"
               data-alt="{{image.description}}" 
               data-aspect={{ abspath | aspect }} 
               data-bg="{{abspath | blurPreview }}"
@@ -55,6 +56,5 @@ title: "Photo Box"
       {% endfor %}
 
     </main>
-    <script defer src="chaffinchAsset(/index.js)"></script>
   </body>
 </html>

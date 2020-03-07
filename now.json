@@ -1,9 +1,9 @@
 {
   "routes": [
     {
-      "src": "/images/(.*)",
+      "src": "/img/(.*)",
       "headers": { "Cache-Control": "s-maxage=604800" },
-      "dest": "/images/$1"
+      "dest": "/img/$1"
     },
     {
       "src": "/*.js",
