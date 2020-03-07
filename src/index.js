@@ -65,11 +65,9 @@ function Img({ xs, sm, md, lg, alt, aspectRatio, bg }) {
       const img = new Image();
       img.onload = function() {
         if (current) {
-          console.log("It loaded!");
           setHasLoaded(true);
         }
       };
-      console.log("xs", isXs, "md", isMd, "sm", isSm, "lg", lg);
       if (isLg) {
         img.src = lg;
       } else if (isMd) {
