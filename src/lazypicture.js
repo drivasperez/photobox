@@ -85,7 +85,6 @@ class LazyPicture extends LitElement {
                 ${Object.entries(this.sizes)
                   .sort(([size1], [size2]) => (size1 > size2 ? 1 : -1))
                   .map(([size, src]) => {
-                    console.log("Size", size, "Src", src);
                     return html`
                       <source media="(min-width: ${size}px)" srcset="${src}" />
                     `;
