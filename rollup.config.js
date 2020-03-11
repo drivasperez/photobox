@@ -46,14 +46,12 @@ export default async function({ watch }) {
 
   return {
     input: {},
-    output: [
-      {
-        dir: chaffinchConfig.outputDir + chaffinchConfig.path,
-        format: "esm",
-        assetFileNames: "[name]-[hash][extname]",
-        sourcemap: true,
-      },
-    ],
+    output: {
+      dir: chaffinchConfig.outputDir + chaffinchConfig.path,
+      format: "esm",
+      assetFileNames: "[name]-[hash][extname]",
+      sourcemap: true,
+    },
     watch: {
       clearScreen: false,
       chokidar: false,

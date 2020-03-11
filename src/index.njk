@@ -21,17 +21,13 @@ title: "Photo Box"
               aspect={{ abspath | aspect }} 
               bg="{{abspath | blurPreview }}"
               class="w-full h-full"
+              alt={{ image.description }}
+              src="img-1200({{ path }})"
             >
               <source media="(min-width: 1200px)" srcset="img-2400({{ path }})"/>
               <source media="(min-width: 800px)" srcset="img-1600({{ path }})"/>
               <source media="(min-width: 600px)" srcset="img-1200({{ path }})"/>
               <source media="(min-width: 400px)" srcset="img-800({{ path }})"/>
-              <img
-              class="absolute w-full h-full left-0 top-0 fader"
-              style="width: 100%; height: 100%"
-              alt={{ image.description }}
-              src="img-1200({{ path }})"
-/>
             </lazy-picture>
             <noscript>
               <img src="chaffinchAsset({{ path }})" alt="{{image.description}}"></img>

@@ -3,6 +3,8 @@ import { LitElement, html, css } from "lit-element";
 class LazyPicture extends LitElement {
   static get properties() {
     return {
+      src: { type: String },
+      alt: { type: String },
       class: { type: String },
       aspect: { type: Number },
       bg: { type: String },
@@ -13,9 +15,17 @@ class LazyPicture extends LitElement {
   static get styles() {
     return css`
       div {
-        position: relative;
         background-size: 100% 100%;
         background-repeat: no-repeat;
+        position: relative;
+      }
+
+      img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
       }
     `;
   }
@@ -23,6 +33,8 @@ class LazyPicture extends LitElement {
   constructor() {
     super();
     this.class = "";
+    this.src = "";
+    this.alt = "";
     this.aspect = 1;
     this.bg = "";
     this.visible = false;
@@ -32,7 +44,7 @@ class LazyPicture extends LitElement {
     super.firstUpdated();
     this._observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
-        this.visible = true;
+        this.makeVisible();
       }
     }, {});
     this._observer.observe(this.shadowRoot.querySelector("#observed"));
@@ -54,13 +66,14 @@ class LazyPicture extends LitElement {
         style="padding-top: ${this
           .aspect}%; background-image: url(data:image/gif;base64,${this.bg});"
       >
-        <picture class=${this.class}>
-          ${this.visible
-            ? html`
+        ${this.visible
+          ? html`
+              <picture class=${this.class}>
                 <slot></slot>
-              `
-            : html``}
-        </picture>
+                <img src=${this.src} alt=${this.alt} />
+              </picture>
+            `
+          : html``}
       </div>
     `;
   }
