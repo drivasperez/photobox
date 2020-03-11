@@ -4,6 +4,7 @@ class LazyPicture extends LitElement {
   static get properties() {
     return {
       src: { type: String },
+      sizes: { type: Object },
       alt: { type: String },
       class: { type: String },
       aspect: { type: Number },
@@ -14,6 +15,15 @@ class LazyPicture extends LitElement {
 
   static get styles() {
     return css`
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
       div {
         background-size: 100% 100%;
         background-repeat: no-repeat;
@@ -26,6 +36,8 @@ class LazyPicture extends LitElement {
         height: 100%;
         left: 0;
         top: 0;
+        animation-name: fadeIn;
+        animation-duration: 1s;
       }
     `;
   }
@@ -34,6 +46,7 @@ class LazyPicture extends LitElement {
     super();
     this.class = "";
     this.src = "";
+    this.sizes = {};
     this.alt = "";
     this.aspect = 1;
     this.bg = "";
@@ -69,7 +82,14 @@ class LazyPicture extends LitElement {
         ${this.visible
           ? html`
               <picture class=${this.class}>
-                <slot></slot>
+                ${Object.entries(this.sizes)
+                  .sort(([size1], [size2]) => (size1 > size2 ? 1 : -1))
+                  .map(([size, src]) => {
+                    console.log("Size", size, "Src", src);
+                    return html`
+                      <source media="(min-width: ${size}px)" srcset="${src}" />
+                    `;
+                  })}
                 <img src=${this.src} alt=${this.alt} />
               </picture>
             `

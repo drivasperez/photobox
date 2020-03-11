@@ -23,12 +23,8 @@ title: "Photo Box"
               class="w-full h-full"
               alt={{ image.description }}
               src="img-1200({{ path }})"
-            >
-              <source media="(min-width: 1200px)" srcset="img-2400({{ path }})"/>
-              <source media="(min-width: 800px)" srcset="img-1600({{ path }})"/>
-              <source media="(min-width: 600px)" srcset="img-1200({{ path }})"/>
-              <source media="(min-width: 400px)" srcset="img-800({{ path }})"/>
-            </lazy-picture>
+              sizes='{"1200": "img-2400({{ path }})", "800": "img-1600({{ path }})", "600": "img-1200({{ path }})", "400": "img-800({{ path }})"}'
+            ></lazy-picture>
             <noscript>
               <img src="chaffinchAsset({{ path }})" alt="{{image.description}}"></img>
             </noscript>
