@@ -34,3 +34,11 @@
   flex-grow: 999;
   min-width: calc(50% - var(--s1));
 }
+
+.height-1em {
+  height: 1em;
+}
+
+.width-1em {
+  height: 1em;
+}

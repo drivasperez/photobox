@@ -1,24 +1,16 @@
 ---
 title: "Photo Box"
+layout: main
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>{{ title }}</title>
-    <link rel="stylesheet" type="text/css" href="chaffinchAsset(/tailwind.css)"/>
-    <link rel="stylesheet" type="text/css" href="chaffinchAsset(/main.css)"/>
-    <script module src="chaffinchAsset(/lazypicture.js)"></script>
-  </head>
-  <body class="dark-mode:bg-gray-900">
-    <main class="mx-8 mt-2 mb-8 stack">
-      <h1 class="dark-mode:text-white text-4xl lg:text-3xl font-thin font-sans">{{ title }}</h1>
-      {% for image in images %}
-        {% set path %}./img/{{image.file}}{% endset %}
-        {% set abspath %}./src/img/{{image.file}}{% endset %}
-        <div>
-          <figure class="mx-auto block lg:flex items-end justify-center" >
-            <div class="flex-1 pb-4 lg:border-b border-black dark-mode:border-gray-100">
-              <lazy-picture
+<main class="mx-8 mt-2 mb-8 stack">
+  <h1 class="dark-mode:text-white text-4xl lg:text-3xl font-thin font-sans">{{ title }}</h1>
+  {% for image in images %}
+    {% set path %}./img/{{image.file}}{% endset %}
+    {% set abspath %}./src/img/{{image.file}}{% endset %}
+    <div>
+      <figure class="mx-auto block lg:flex items-end justify-center" >
+        <div class="flex-1 pb-4 lg:border-b border-black dark-mode:border-gray-100">
+          <lazy-picture
               aspect={{ abspath | aspect }} 
               bg="{{abspath | blurPreview }}"
               class="w-full h-full"
@@ -26,33 +18,35 @@ title: "Photo Box"
               src="img-1200({{ path }})"
               sizes='{"1200": "img-2400({{ path }})", "800": "img-1600({{ path }})", "600": "img-1200({{ path }})", "400": "img-800({{ path }})"}'
             ></lazy-picture>
-              <noscript>
-                <img src="chaffinchAsset({{ path }})" alt="{{image.description}}"></img>
-              </noscript>
+          <noscript>
+            <img src="chaffinchAsset({{ path }})" alt="{{image.description}}"></img>
+          </noscript>
 
-            </div>
-            <figcaption class="lg:pl-4 w-full lg:w-40 text-3xl lg:text-sm align-baseline flex flex-0 lg:block items-start justify-between w-40 ">
-              <div class="order-2 text-right lg:text-left">
-                <p class="uppercase hidden lg:block tracking-wide text-gray-900 dark-mode:text-gray-100 lg:text-xs">{{ abspath | exif(["image.Make", "image.Model"]) }}</p>
-                <p class="text-gray-800 dark-mode:text-gray-200 lg:text-xs whitespace-no-wrap">
-                  <span class="text-gray-700 dark-mode:text-gray-300 tracking-wide">FL </span>
-                  {{ abspath | exif("exif.FocalLength") }}
+        </div>
+        <figcaption class="lg:pl-4 w-full lg:w-40 text-3xl lg:text-sm align-baseline flex flex-0 lg:block items-start justify-between w-40 ">
+          <div class="order-2 text-right lg:text-left">
+            <p class="uppercase hidden lg:block tracking-wide text-gray-900 dark-mode:text-gray-100 lg:text-xs">{{ abspath | exif(["image.Make", "image.Model"]) }}</p>
+            <p class="text-gray-800 dark-mode:text-gray-200 lg:text-xs whitespace-no-wrap">
+              <span class="text-gray-700 dark-mode:text-gray-300 tracking-wide">FL </span>
+              {{ abspath | exif("exif.FocalLength") }}
               &bull;
               <span class="text-gray-700 dark-mode:text-gray-300 tracking-wide ">A </span>
-                  {{ abspath | exif("exif.FNumber") }}
+              {{ abspath | exif("exif.FNumber") }}
               &bull;
               <span class="text-gray-700 dark-mode:text-gray-300  tracking-wide ">Sh. </span>
-                  {{ abspath | exif("exif.ShutterSpeedValue") }}</p>
-              </div>
-              <div class="order-1">
-                <h2 class="max-w-sm dark-mode:text-white">{{image.description}}</h2>
-                <p class="italic text-gray-800 dark-mode:text-gray-200 lg:text-sm">{{ abspath | exif("exif.DateTimeOriginal") | date("",":") }}</p>
-              </div>
-            </figcaption>
-          </figure>
-        </div>
-      {% endfor %}
+              {{ abspath | exif("exif.ShutterSpeedValue") }}</p>
+          </div>
+          <div class="order-1">
+            <h2 class="flex items-baseline max-w-sm dark-mode:text-white">{{image.description}}
+              <a class="pl-1" href="/images/{{ image.description | slug }}">
+                <svg class="height-1em width-1em" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+              </a>
+            </h2>
+            <p class="italic text-gray-800 dark-mode:text-gray-200 lg:text-sm">{{ abspath | exif("exif.DateTimeOriginal") | date("",":") }}</p>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  {% endfor %}
 
-    </main>
-  </body>
-</html>
+</main>
