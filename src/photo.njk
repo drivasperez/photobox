@@ -5,6 +5,7 @@ pagination:
   size: 1
   alias: image
 permalink: "images/{{ image.description | slug }}.html"
+title: "Photo Box - Image"
 ---
 {% set path %}/img/{{image.file}}{% endset %}
 {% set abspath %}./src/img/{{image.file}}{% endset %}
