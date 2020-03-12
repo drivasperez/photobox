@@ -81,7 +81,7 @@ class LazyPicture extends LitElement {
       >
         ${this.visible
           ? html`
-              <picture class=${this.class}>
+              <picture>
                 ${Object.entries(this.sizes)
                   .sort(([size1], [size2]) => (size1 > size2 ? 1 : -1))
                   .map(([size, src]) => {
