@@ -1,5 +1,5 @@
 module.exports = {
-  origin: "https://hi.com",
+  origin: "https://drpz.xyz",
   path: "/",
   outputDir: "dist",
   postCSSconfig: "postcss.config.js",
