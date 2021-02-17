@@ -12,3 +12,5 @@
 - [ ] Add interface for adding to S3 bucket, rather than manually in AWS console.
 - [ ] Move AWS region/bucket to environment variables
 - [ ] Fix CSS zoom issues
+- [ ] Check bundle sizes
+- [ ] RSS Feed

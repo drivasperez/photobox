@@ -66,7 +66,7 @@ module.exports = async function () {
       const outStream = fs.createWriteStream(imgPath);
       stream.pipe(outStream);
 
-      stream.push(
+      streams.push(
         new Promise((resolve, reject) => {
           stream.on("error", (err) => reject(err));
           outStream.on("error", (err) => reject(err));
