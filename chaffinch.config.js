@@ -3,4 +3,6 @@ module.exports = {
   path: "/",
   outputDir: "dist",
   postCSSconfig: "postcss.config.js",
+  awsRegion: "eu-west-2",
+  awsBucket: "drpzphotos",
 };
