@@ -2,6 +2,9 @@ const aws = require("aws-sdk");
 const fsp = require("fs").promises;
 const fs = require("fs");
 const path = require("path");
+const { promisify } = require("util");
+const exif = promisify(require("exif"));
+const { parse: parseDate } = require("date-fns");
 const {
   awsRegion: region,
   awsBucket: Bucket,
@@ -16,7 +19,9 @@ function chunk(arr, size) {
 module.exports = async function () {
   console.log("Beginning photo download...");
   aws.config.setPromisesDependency();
-  aws.config.update({ region });
+  aws.config.update({
+    region,
+  });
 
   const s3 = new aws.S3();
 
@@ -37,7 +42,7 @@ module.exports = async function () {
       description: "A photo",
       date: new Date(photo.LastModified),
     };
-  }).sort((a, b) => a.date > b.date);
+  });
 
   const parentDirectory = path.resolve(__dirname, "..");
   const imgDirectory = path.join(parentDirectory, "img");
@@ -51,24 +56,36 @@ module.exports = async function () {
   const chunkedList = chunk(listData, 100);
   console.log(`Downloading in ${chunkedList.length} chunks`);
   for (chunk of chunkedList) {
-    const streams = chunk.map((photo) => {
+    const streams = [];
+    chunk.forEach((photo) => {
+      const imgPath = path.join(imgDirectory, photo.file);
+      if (fs.existsSync(imgPath)) return;
       const stream = s3
         .getObject({ Key: photo.file, Bucket })
         .createReadStream();
-      const outStream = fs.createWriteStream(
-        path.join(imgDirectory, photo.file)
-      );
+      const outStream = fs.createWriteStream(imgPath);
       stream.pipe(outStream);
 
-      return new Promise((resolve, reject) => {
-        stream.on("error", (err) => reject(err));
-        outStream.on("error", (err) => reject(err));
-        stream.on("end", () => resolve());
-      });
+      stream.push(
+        new Promise((resolve, reject) => {
+          stream.on("error", (err) => reject(err));
+          outStream.on("error", (err) => reject(err));
+          stream.on("end", () => resolve());
+        })
+      );
     });
-    console.log(`Downloading ${streams.length} photos...`);
+    console.log(`Downloading ${streams.length} new photos...`);
     await Promise.all(streams);
   }
+
+  console.log("...Done");
+
+  listData.forEach(async (photo) => {
+    const imgPath = path.join(imgDirectory, photo.file);
+    const metadata = await exif(imgPath);
+    const photoDate = metadata.exif.DateTimeOriginal;
+    photo.date = parseDate(photoDate, "yyyy:MM:dd HH:mm:ss", new Date());
+  });
 
   return listData;
 };

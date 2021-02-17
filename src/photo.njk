@@ -4,7 +4,7 @@ pagination:
   data: images
   size: 1
   alias: image
-permalink: "images/{{ image.description | slug }}.html"
+permalink: "images/{{ image.file | slug }}.html"
 title: "Photo Box - Image"
 ---
 {% set path %}/img/{{image.file}}{% endset %}

@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "aws-sdk": "^2.845.0",
-    "date-fns": "^2.10.0",
+    "date-fns": "^2.17.0",
+    "dotenv": "^8.2.0",
     "exif": "^0.6.0",
     "htm": "^3.0.3",
     "lit-element": "^2.2.1",

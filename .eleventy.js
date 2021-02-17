@@ -2,8 +2,9 @@ const sharp = require("sharp");
 const exif = require("exif");
 const shutterSpeed = require("./lib/shutterSpeed");
 const { format } = require("date-fns");
+require("dotenv").config();
 
-module.exports = function(cfg) {
+module.exports = function (cfg) {
   const config = {
     dir: {
       input: "src",
@@ -13,18 +14,18 @@ module.exports = function(cfg) {
 
   const exifData = new Map();
 
-  cfg.addNunjucksFilter("date", function(date, formatStr, sep) {
+  cfg.addNunjucksFilter("date", function (date, formatStr, sep) {
     const fmt = formatStr || "dd/MM/yyyy";
 
     let dateArr = [date];
     if (sep) {
-      dateArr = date.split(sep).flatMap(x => x.split(" "));
+      dateArr = date.split(sep).flatMap((x) => x.split(" "));
     }
 
     return format(new Date(...dateArr), fmt);
   });
 
-  cfg.addNunjucksAsyncFilter("aspect", async function(path, callback) {
+  cfg.addNunjucksAsyncFilter("aspect", async function (path, callback) {
     try {
       const { height, width } = await sharp(path).metadata();
 
@@ -34,12 +35,9 @@ module.exports = function(cfg) {
     }
   });
 
-  cfg.addNunjucksAsyncFilter("blurPreview", async function(path, callback) {
+  cfg.addNunjucksAsyncFilter("blurPreview", async function (path, callback) {
     try {
-      const imgBuf = await sharp(path)
-        .resize(16)
-        .blur()
-        .toBuffer();
+      const imgBuf = await sharp(path).resize(16).blur().toBuffer();
       const b64str = imgBuf.toString("base64");
       callback(null, b64str);
     } catch (error) {
@@ -67,38 +65,37 @@ module.exports = function(cfg) {
     callback(null, strs.join(" "));
   }
 
-  cfg.addNunjucksAsyncFilter("exif", async function(
-    path,
-    attributes,
-    callback
-  ) {
-    attributes = Array.isArray(attributes) ? attributes : [attributes];
+  cfg.addNunjucksAsyncFilter(
+    "exif",
+    async function (path, attributes, callback) {
+      attributes = Array.isArray(attributes) ? attributes : [attributes];
 
-    if (exifData.has(path)) {
-      returnExifData(exifData.get(path), attributes, callback);
-      return;
+      if (exifData.has(path)) {
+        returnExifData(exifData.get(path), attributes, callback);
+        return;
+      }
+
+      exif({ image: path }, (_err, data) => {
+        const correctedData = {
+          ...data,
+          exif: {
+            ...data.exif,
+            FocalLength: data.exif.FocalLength
+              ? `${data.exif.FocalLength}mm`
+              : "-",
+            FNumber: data.exif.FNumber ? `f${data.exif.FNumber}` : "-",
+            ShutterSpeedValue: data.exif.ShutterSpeedValue
+              ? `${shutterSpeed(
+                  Math.pow(2, -data.exif.ShutterSpeedValue).toFixed(3)
+                )}s`
+              : "-",
+          },
+        };
+        exifData.set(path, correctedData);
+        returnExifData(correctedData, attributes, callback);
+      });
     }
-
-    exif({ image: path }, (_err, data) => {
-      const correctedData = {
-        ...data,
-        exif: {
-          ...data.exif,
-          FocalLength: data.exif.FocalLength
-            ? `${data.exif.FocalLength}mm`
-            : "-",
-          FNumber: data.exif.FNumber ? `f${data.exif.FNumber}` : "-",
-          ShutterSpeedValue: data.exif.ShutterSpeedValue
-            ? `${shutterSpeed(
-                Math.pow(2, -data.exif.ShutterSpeedValue).toFixed(3)
-              )}s`
-            : "-",
-        },
-      };
-      exifData.set(path, correctedData);
-      returnExifData(correctedData, attributes, callback);
-    });
-  });
+  );
 
   return config;
 };
