@@ -9,12 +9,40 @@ const {
   awsRegion: region,
   awsBucket: Bucket,
 } = require("../../chaffinch.config.js");
+const shutterSpeed = require("../../lib/shutterSpeed");
 
 function chunk(arr, size) {
   return Array.from({ length: Math.ceil(arr.length / size) }, (_v, i) =>
     arr.slice(i * size, i * size + size)
   );
 }
+
+async function getExifData(imgPath) {
+  const data = await exif(imgPath);
+  const correctedData = {
+    ...data,
+    exif: {
+      ...data.exif,
+      DateTimeOriginal: parseDate(
+        data.exif.DateTimeOriginal,
+        "yyyy:MM:dd HH:mm:ss",
+        new Date()
+      ),
+      FocalLength: data.exif.FocalLength ? `${data.exif.FocalLength}mm` : "-",
+      FNumber: data.exif.FNumber ? `f${data.exif.FNumber}` : "-",
+      ShutterSpeedValue: data.exif.ShutterSpeedValue
+        ? `${shutterSpeed(
+            Math.pow(2, -data.exif.ShutterSpeedValue).toFixed(3)
+          )}s`
+        : "-",
+    },
+  };
+
+  return correctedData;
+}
+
+const dateSortFn = (a, b) =>
+  b.metadata.exif.DateTimeOriginal - a.metadata.exif.DateTimeOriginal;
 
 module.exports = async function () {
   console.log("Beginning photo download...");
@@ -40,7 +68,6 @@ module.exports = async function () {
     return {
       file: photo.Key,
       description: "A photo",
-      date: new Date(photo.LastModified),
     };
   });
 
@@ -80,12 +107,10 @@ module.exports = async function () {
 
   console.log("...Done");
 
-  listData.forEach(async (photo) => {
+  for (const photo of listData) {
     const imgPath = path.join(imgDirectory, photo.file);
-    const metadata = await exif(imgPath);
-    const photoDate = metadata.exif.DateTimeOriginal;
-    photo.date = parseDate(photoDate, "yyyy:MM:dd HH:mm:ss", new Date());
-  });
+    photo.metadata = await getExifData(imgPath);
+  }
 
-  return listData;
+  return listData.sort(dateSortFn);
 };

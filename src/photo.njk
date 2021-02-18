@@ -31,18 +31,18 @@ title: "Photo Box - Image"
         </noscript>
 
       </div>
-      <!--<figcaption class="lg:pl-4 w-full lg:w-40 text-3xl lg:text-sm align-baseline flex flex-0 lg:block items-start justify-between w-40 ">
+      <figcaption class="lg:pl-4 w-full lg:w-40 text-3xl lg:text-sm align-baseline flex flex-0 lg:block items-start justify-between w-40 ">
       <div class="order-2 text-right lg:text-left">
-        <p class="uppercase hidden lg:block tracking-wide text-gray-900 dark-mode:text-gray-100 lg:text-xs">{{ abspath | exif(["image.Make", "image.Model"]) }}</p>
+        <p class="uppercase hidden lg:block tracking-wide text-gray-900 dark-mode:text-gray-100 lg:text-xs">{{ image.metadata.image.Make }} {{ image.metadata.image.Model }}</p>
         <p class="text-gray-800 dark-mode:text-gray-200 lg:text-xs whitespace-no-wrap">
           <span class="text-gray-700 dark-mode:text-gray-300 tracking-wide">FL </span>
-          {{ abspath | exif("exif.FocalLength") }}
+          {{ image.metadata.exif.FocalLength }}
               &bull;
               <span class="text-gray-700 dark-mode:text-gray-300 tracking-wide ">A </span>
-          {{ abspath | exif("exif.FNumber") }}
+          {{ image.metadata.exif.FNumber }}
               &bull;
               <span class="text-gray-700 dark-mode:text-gray-300  tracking-wide ">Sh. </span>
-          {{ abspath | exif("exif.ShutterSpeedValue") }}</p>
+          {{ image.metadata.exif.ShutterSpeedValue }}</p>
       </div>
       <div class="order-1">
         <h2 class="flex items-baseline max-w-sm dark-mode:text-white">{{image.description}}
@@ -50,9 +50,9 @@ title: "Photo Box - Image"
             <svg class="height-1em width-1em" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
           </a>
         </h2>
-        <p class="italic text-gray-800 dark-mode:text-gray-200 lg:text-sm">{{ abspath | exif("exif.DateTimeOriginal") | date("",":") }}</p>
+        <p class="italic text-gray-800 dark-mode:text-gray-200 lg:text-sm">{{ image.metadata.exif.DateTimeOriginal | date }}</p>
       </div>
-    </figcaption>-->
+    </figcaption>
     </figure>
   </div>
 </main>

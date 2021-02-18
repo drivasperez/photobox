@@ -1,7 +1,7 @@
 const sharp = require("sharp");
+const { format } = require("date-fns");
 const exif = require("exif");
 const shutterSpeed = require("./lib/shutterSpeed");
-const { format } = require("date-fns");
 require("dotenv").config();
 
 module.exports = function (cfg) {
@@ -12,17 +12,10 @@ module.exports = function (cfg) {
     },
   };
 
-  const exifData = new Map();
-
-  cfg.addNunjucksFilter("date", function (date, formatStr, sep) {
-    const fmt = formatStr || "dd/MM/yyyy";
-
-    let dateArr = [date];
-    if (sep) {
-      dateArr = date.split(sep).flatMap((x) => x.split(" "));
-    }
-
-    return format(new Date(...dateArr), fmt);
+  cfg.addNunjucksFilter("date", function (date, formatStr = "dd/MM/yyyy") {
+    console.log("date", date, typeof date);
+    const formatted = format(date, formatStr);
+    return formatted;
   });
 
   cfg.addNunjucksAsyncFilter("aspect", async function (path, callback) {
@@ -45,57 +38,9 @@ module.exports = function (cfg) {
     }
   });
 
-  function returnExifData(data, attributes, callback) {
-    if (!attributes) {
-      callback(null, JSON.stringify(data));
-      return;
-    }
-
-    let strs = [];
-    for (const attrib of attributes) {
-      const trail = attrib.split(".");
-      let item = data[trail[0]];
-
-      for (let i = 1; i < trail.length; i++) {
-        item = item[trail[i]];
-      }
-
-      strs.push(item);
-    }
-    callback(null, strs.join(" "));
-  }
-
-  cfg.addNunjucksAsyncFilter(
-    "exif",
-    async function (path, attributes, callback) {
-      attributes = Array.isArray(attributes) ? attributes : [attributes];
-
-      if (exifData.has(path)) {
-        returnExifData(exifData.get(path), attributes, callback);
-        return;
-      }
-
-      exif({ image: path }, (_err, data) => {
-        const correctedData = {
-          ...data,
-          exif: {
-            ...data.exif,
-            FocalLength: data.exif.FocalLength
-              ? `${data.exif.FocalLength}mm`
-              : "-",
-            FNumber: data.exif.FNumber ? `f${data.exif.FNumber}` : "-",
-            ShutterSpeedValue: data.exif.ShutterSpeedValue
-              ? `${shutterSpeed(
-                  Math.pow(2, -data.exif.ShutterSpeedValue).toFixed(3)
-                )}s`
-              : "-",
-          },
-        };
-        exifData.set(path, correctedData);
-        returnExifData(correctedData, attributes, callback);
-      });
-    }
-  );
+  cfg.addFilter("log", (value) => {
+    console.log(value);
+  });
 
   return config;
 };
