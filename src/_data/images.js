@@ -3,13 +3,13 @@ const sharp = require("sharp");
 const fsp = require("fs").promises;
 const fs = require("fs");
 const path = require("path");
-const { promisify } = require("util");
 const exifReader = require("exif-reader");
-const { parse: parseDate } = require("date-fns");
+
 const {
   awsRegion: region,
   awsBucket: Bucket,
 } = require("../../chaffinch.config.js");
+
 const shutterSpeed = require("../../lib/shutterSpeed");
 
 function chunk(arr, size) {
@@ -41,10 +41,27 @@ async function processExifBuffer(buf) {
 async function getPhotoMetadata(imgPath) {
   const img = sharp(imgPath);
   const metadata = await img.metadata();
+
+  const { height, width } = metadata;
+
+  const aspectRatio = ((height / width) * 100).toString();
+
   const exifData = await processExifBuffer(metadata.exif);
   const imgBuf = await img.resize(16).blur().toBuffer();
   const b64str = imgBuf.toString("base64");
-  return { blurPreview: b64str, metadata: exifData };
+  return { blurPreview: b64str, metadata: { ...exifData, aspectRatio } };
+}
+
+async function getS3ObjectHead(keys, s3) {
+  const promises = keys.map((key) => {
+    return s3.headObject({ Key: key, Bucket }).promise();
+  });
+
+  const heads = await Promise.all(promises);
+
+  const data = new Map(heads.map((val, i) => [keys[i], val]));
+
+  return data;
 }
 
 const dateSortFn = (a, b) =>
@@ -69,6 +86,11 @@ module.exports = async function () {
     .promise();
 
   if (!list.Contents) throw new Error("Couldn't load list from S3");
+
+  const s3ObjectHeadsPromise = getS3ObjectHead(
+    list.Contents.map((x) => x.Key),
+    s3
+  );
 
   const listData = list.Contents.map((photo) => {
     return {
@@ -113,12 +135,15 @@ module.exports = async function () {
 
   console.log("...Done");
 
+  const s3ObjectHeads = await s3ObjectHeadsPromise;
+
   for (const photo of listData) {
     const imgPath = path.join(imgDirectory, photo.file);
     const { metadata, blurPreview } = await getPhotoMetadata(imgPath);
 
     photo.metadata = metadata;
     photo.blurPreview = blurPreview;
+    photo.description = s3ObjectHeads.get(photo.file)?.Metadata.description;
   }
 
   return listData.sort(dateSortFn);

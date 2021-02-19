@@ -11,7 +11,7 @@ layout: main
       <figure class="mx-auto block lg:flex items-end justify-center" >
         <div class="flex-1 pb-4 lg:border-b border-black dark-mode:border-gray-100">
           <lazy-picture
-              aspect={{ abspath | aspect }} 
+              aspect={{ image.metadata.aspectRatio }} 
               bg="{{ image.blurPreview }}"
               class="w-full h-full"
               alt={{ image.description }}

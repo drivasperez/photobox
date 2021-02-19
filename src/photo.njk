@@ -19,8 +19,8 @@ title: "Photo Box - Image"
     <figure class="w-10/12 mx-auto" >
       <div class="flex-1 pb-4 lg:border-b border-black dark-mode:border-gray-100">
         <lazy-picture
-              aspect={{ abspath | aspect }} 
-              bg="{{abspath | blurPreview }}"
+              aspect={{ image.metadata.aspectRatio }} 
+              bg="{{ image.blurPreview }}"
               class="w-full h-full"
               alt={{ image.description }}
               src="img-1200({{ path }})"
