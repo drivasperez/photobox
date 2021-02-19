@@ -26,20 +26,14 @@ const production = !process.env.ROLLUP_WATCH;
 const chaffinchConfig = require("./chaffinch.config.js");
 const usePostCSS = fs.existsSync(chaffinchConfig.postCSSconfig);
 
-export default async function({ watch }) {
+export default async function ({ watch }) {
   if (usePostCSS) {
-    console.log("Using postcss");
     await buildPostCSS("src/**/*.css", ".build-tmp", { watch });
   } else {
     let files = await glob("src/**/*.css");
     // TODO: Watch src for CSS files if watch mode is set.
     // I guess this is a reason to learn what chokidar is.
-    files = files.map(file =>
-      file
-        .split(path.sep)
-        .slice(1)
-        .join(path.sep)
-    );
+    files = files.map((file) => file.split(path.sep).slice(1).join(path.sep));
 
     await copyFiles("src", ".build-tmp", files);
   }

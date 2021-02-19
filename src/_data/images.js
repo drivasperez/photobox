@@ -72,6 +72,8 @@ module.exports = async function () {
   aws.config.setPromisesDependency();
   aws.config.update({
     region,
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
   });
 
   const s3 = new aws.S3();

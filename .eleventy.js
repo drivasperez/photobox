@@ -11,7 +11,6 @@ module.exports = function (cfg) {
   };
 
   cfg.addNunjucksFilter("date", function (date, formatStr = "dd/MM/yyyy") {
-    console.log("date", date, typeof date);
     const formatted = format(date, formatStr);
     return formatted;
   });
