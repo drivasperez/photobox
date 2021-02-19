@@ -12,7 +12,7 @@ layout: main
         <div class="flex-1 pb-4 lg:border-b border-black dark-mode:border-gray-100">
           <lazy-picture
               aspect={{ abspath | aspect }} 
-              bg="{{abspath | blurPreview }}"
+              bg="{{ image.blurPreview }}"
               class="w-full h-full"
               alt={{ image.description }}
               src="img-1200({{ path }})"

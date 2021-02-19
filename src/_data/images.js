@@ -1,4 +1,5 @@
 const aws = require("aws-sdk");
+const sharp = require("sharp");
 const fsp = require("fs").promises;
 const fs = require("fs");
 const path = require("path");
@@ -39,6 +40,12 @@ async function getExifData(imgPath) {
   };
 
   return correctedData;
+}
+
+async function getBlurPreview(imgPath) {
+  const imgBuf = await sharp(imgPath).resize(16).blur().toBuffer();
+  const b64str = imgBuf.toString("base64");
+  return b64str;
 }
 
 const dateSortFn = (a, b) =>
@@ -109,7 +116,13 @@ module.exports = async function () {
 
   for (const photo of listData) {
     const imgPath = path.join(imgDirectory, photo.file);
-    photo.metadata = await getExifData(imgPath);
+    const [metadata, blurPreview] = await Promise.all([
+      getExifData(imgPath),
+      getBlurPreview(imgPath),
+    ]);
+
+    photo.metadata = metadata;
+    photo.blurPreview = blurPreview;
   }
 
   return listData.sort(dateSortFn);
