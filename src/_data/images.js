@@ -145,7 +145,8 @@ module.exports = async function () {
 
     photo.metadata = metadata;
     photo.blurPreview = blurPreview;
-    photo.description = s3ObjectHeads.get(photo.file)?.Metadata.description;
+    const s3Metadata = s3ObjectHeads.get(photo.file);
+    photo.description = s3Metadata ? s3Metadata.Metadata.description : "";
     photo.path = path.join("img", photo.file);
   }
 
