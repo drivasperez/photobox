@@ -144,6 +144,7 @@ module.exports = async function () {
     photo.metadata = metadata;
     photo.blurPreview = blurPreview;
     photo.description = s3ObjectHeads.get(photo.file)?.Metadata.description;
+    photo.path = path.join("img", photo.file);
   }
 
   return listData.sort(dateSortFn);

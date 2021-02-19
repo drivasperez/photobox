@@ -1,12 +1,14 @@
 ---
 title: "Photo Box"
 layout: main
+pagination: 
+  data: images
+  size: 15
 ---
 <main class="mx-8 md:mx-12 lg:mx-16 mt-2 mb-8 stack">
   <h1 class="dark-mode:text-white text-3xl font-thin font-sans">{{ title }}</h1>
-  {% for image in images %}
-    {% set path %}./img/{{image.file}}{% endset %}
-    {% set abspath %}./src/img/{{image.file}}{% endset %}
+  {% for image in pagination.items %}
+    {% set path %}/img/{{image.file}}{% endset %}
     <div>
       <figure class="mx-auto block lg:flex items-end justify-center" >
         <div class="flex-1 pb-4 lg:border-b border-black dark-mode:border-gray-100">
@@ -48,5 +50,14 @@ layout: main
       </figure>
     </div>
   {% endfor %}
+
+  <div class="pt-8">
+    <nav aria-label="pages" id="page-nav" class="border-t border-grey-500">
+      <ol class="flex justify-between">
+        <li>{% if pagination.href.previous %}<a class="hover:underline" href="{{ pagination.href.previous }}">Previous</a>{% else %}<span class="text-grey-400">Previous</span>{% endif %}</li>
+        <li>{% if pagination.href.next %}<a class="hover:underline" href="{{ pagination.href.next }}">Next</a>{% else %}<span class="text-color-400">Next</span>{% endif %}</li>
+      </ol>
+    </nav>
+  </div>
 
 </main>
