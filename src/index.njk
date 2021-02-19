@@ -9,7 +9,7 @@ pagination:
   <h1 class="dark-mode:text-white text-3xl font-thin font-sans">{{ title }}</h1>
   {% for image in pagination.items %}
     {% set path %}/img/{{image.file}}{% endset %}
-    <div>
+    <div style="max-width: calc(100vh / ({{ image.metadata.aspectRatio }} / 100));">
       <figure class="mx-auto block lg:flex items-end justify-center" >
         <div class="flex-1 pb-4 lg:border-b border-black dark-mode:border-gray-100">
           <lazy-picture
