@@ -31,8 +31,6 @@ export default async function ({ watch }) {
     await buildPostCSS("src/**/*.css", ".build-tmp", { watch });
   } else {
     let files = await glob("src/**/*.css");
-    // TODO: Watch src for CSS files if watch mode is set.
-    // I guess this is a reason to learn what chokidar is.
     files = files.map((file) => file.split(path.sep).slice(1).join(path.sep));
 
     await copyFiles("src", ".build-tmp", files);
