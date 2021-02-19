@@ -1429,7 +1429,7 @@
   "resolved" "https://registry.yarnpkg.com/date-time/-/date-time-0.1.1.tgz"
   "version" "0.1.1"
 
-"debug@^2.2", "debug@^2.2.0", "debug@^2.3.3", "debug@2.6.9":
+"debug@^2.2.0", "debug@^2.3.3", "debug@2.6.9":
   "integrity" "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="
   "resolved" "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz"
   "version" "2.6.9"
@@ -1932,12 +1932,10 @@
     "signal-exit" "^3.0.0"
     "strip-eof" "^1.0.0"
 
-"exif@^0.6.0":
-  "integrity" "sha1-YKYmaAdlQst+T1cZnUrG830sX0o="
-  "resolved" "https://registry.yarnpkg.com/exif/-/exif-0.6.0.tgz"
-  "version" "0.6.0"
-  dependencies:
-    "debug" "^2.2"
+"exif-reader@^1.0.3":
+  "integrity" "sha512-tWMBj1+9jUSibgR/kv/GQ/fkR0biaN9GEZ5iPdf7jFeH//d2bSzgPoaWf1OfMv4MXFD4upwvpCCyeMvSyLWSfA=="
+  "resolved" "https://registry.npmjs.org/exif-reader/-/exif-reader-1.0.3.tgz"
+  "version" "1.0.3"
 
 "expand-brackets@^2.1.4":
   "integrity" "sha1-t3c14xXOMPa27/D4OwQVGiJEliI="

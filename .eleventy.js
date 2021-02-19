@@ -1,7 +1,5 @@
 const sharp = require("sharp");
 const { format } = require("date-fns");
-const exif = require("exif");
-const shutterSpeed = require("./lib/shutterSpeed");
 require("dotenv").config();
 
 module.exports = function (cfg) {
