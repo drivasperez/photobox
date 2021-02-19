@@ -1,7 +1,7 @@
 {
-  "name": "chaffinch",
+  "name": "photobox",
   "devDependencies": {
-    "@11ty/eleventy": "^0.10.0",
+    "@11ty/eleventy": "^0.11.0",
     "@fullhuman/postcss-purgecss": "^2.0.6",
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
