@@ -30,7 +30,7 @@
     "exif-reader": "^1.0.3",
     "htm": "^3.0.3",
     "lit-element": "^2.2.1",
-    "sharp": "^0.24.1"
+    "sharp": "^0.30.5"
   },
   "scripts": {
     "clean": "del build .build-tmp",
